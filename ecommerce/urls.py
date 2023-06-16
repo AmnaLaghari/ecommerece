@@ -20,5 +20,6 @@ from customusers.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("customusers.urls")),
+    path("users/", include("django.contrib.auth.urls")),
     path('', home.home, name='home')
 ]
