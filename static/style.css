@@ -6,6 +6,12 @@
     background-color: #385A64;
     color: white;
 }
+
 .card-color{
     background-color: #bfc8ca;
+}
+
+.profile{
+    width: 3rem;
+    height: 3rem;
 }

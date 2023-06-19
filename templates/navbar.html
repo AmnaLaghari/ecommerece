@@ -13,6 +13,9 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">logout</a>
           </li>
+          <li>
+            <img src="{{user.profile.url}}" alt="profile" class="rounded-circle profile">
+          </li>
           {% else %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>

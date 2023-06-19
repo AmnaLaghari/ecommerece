@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'customusers',
     "crispy_forms",
     "crispy_bootstrap5",
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +140,13 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config( 
+  cloud_name = env('CLOUD_NAME'),
+  api_key = env('API_KEY'), 
+  api_secret = env('API_SECRET')
+)
