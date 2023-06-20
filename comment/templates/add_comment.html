@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Comment{% endblock %}
+
+{% block content %}
+  <h2 class="text-center mt-3">Add Comment</h2>
+  <div class="card m-5 p-5 card-color">
+    <form method="post" enctype="multipart/form-data" id="myUniqueUploadId">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-submit">Add</button>
+      <a href="{% url 'products' %}" class="btn btn-submit">Back</a>
+    </form>
+  </div>    
+{% endblock %}

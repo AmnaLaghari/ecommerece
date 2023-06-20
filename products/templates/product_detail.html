@@ -52,6 +52,20 @@
                 <a href="{% url 'products' %}" class="btn btn-submit">Back</a>
                 <a href="{% url 'product_detail' product.pk %}" class="btn add-to-cart">Add to cart</a>
                 {% endif %}
+                <hr>
+                <h4>Comments</h4>
+                {% if not request.user|is_owner_of_product:product %}
+                    <a href="{% url 'add_comment' product.pk %}" class="btn btn-submit">Add comment</a>
+                {% endif %}
+                {% if not product.comments.all %}
+                    No comments yet..
+                {% else %}
+                {% for comment in product.comments.all %}
+                    <div class="card m-2 p-2">
+                        <p>{{comment.content}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
             </div>
         </div>
     </div>

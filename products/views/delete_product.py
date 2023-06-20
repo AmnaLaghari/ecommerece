@@ -16,7 +16,7 @@ class DeleteProduct(DeleteView):
         if not_owner(self.request.user, obj):
             messages.error(
                 request, "you are not authorized to delete this product")
-            redirect('products')
+            return redirect('products')
         return super(DeleteProduct, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
