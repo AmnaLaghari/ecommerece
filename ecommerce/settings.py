@@ -73,6 +73,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'poll_extras': 'ecommerce.templatetags.poll_extras', }
         },
     },
 ]
@@ -139,8 +141,8 @@ STATICFILES_DIRS = [
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "products"
+LOGOUT_REDIRECT_URL = "products"
 
 import cloudinary
 import cloudinary.uploader

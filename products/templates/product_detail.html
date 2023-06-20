@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load poll_extras %}
+{% block title %}{{product.title}}{% endblock %}
+
+{% block content %}
+{{object_list}}
+<div class="row">
+    <div class="col-8">
+        <div class="card m-3">
+            <div class="card-body">
+                <div id="carouselExample_{{product.id}}" class="carousel slide">
+                    <div class="carousel-inner box">
+                        <div class="carousel-item active mt-2 container">
+                            <img src="{{product.image_set.first.image.url}}" class="d-block w-100 product-image-detail"
+                                alt="...">
+                        </div>
+                        {% for image in product.image_set.all %}
+                        {% if not forloop.first %}
+                        <div class="carousel-item container mt-2">
+                            <img src="{{image.image.url}}" class="card-img-top mt-3 product-image-detail" alt="" />
+                        </div>
+                        {% endif %}
+                        {% empty %}
+                        <!-- no entries -->
+                        {% endfor %}
+                        <button class="carousel-control-prev" type="button"
+                            data-bs-target="#carouselExample_{{product.id}}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            data-bs-target="#carouselExample_{{product.id}}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card m-3 p-3">
+            <div class="card-body">
+                <h4 class="card-title">{{product.title}}</h4>
+                <p class="card-text">{{product.description}}</p>
+                <p class="card-text">${{product.price}}</p>
+                {% if request.user|is_owner_of_product:product %}
+                <a href="{% url 'my_products' %}" class="btn btn-submit">Back</a>
+                <a href="{% url 'edit_product' product.pk %}" class="btn btn-submit">Edit</a>
+                <a href="{% url 'delete_product' product.pk %}" class="btn btn-submit">delete</a>
+                {% else %}
+                <a href="{% url 'products' %}" class="btn btn-submit">Back</a>
+                <a href="{% url 'product_detail' product.pk %}" class="btn add-to-cart">Add to cart</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

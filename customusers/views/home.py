@@ -1,4 +1,4 @@
 from django.shortcuts import redirect, render
 
 def home(request):
-    return render(request, 'homepage.html')
+    return render(request, 'products.html')
