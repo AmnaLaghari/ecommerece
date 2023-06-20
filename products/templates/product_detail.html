@@ -62,7 +62,28 @@
                 {% else %}
                 {% for comment in product.comments.all %}
                     <div class="card m-2 p-2">
-                        <p>{{comment.content}}</p>
+                        <div class="row">
+                            <div class="col-9">
+                                {{comment.content}}
+                            </div>
+                            {% if request.user|is_owner_of_product:product %}
+                            <span class="col-3 justify-content-end">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="{% url 'edit_comment' product.id comment.id %}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="{% url 'delete_comment' product.id comment.id %}" ><i class="fa-sharp fa-solid fa-trash"></i></a>
+                                    </div>
+                                </div>
+                            </span>
+                            {% endif %}
+                        </div>
+                        <!-- <span>{{comment.content}}
+                            <span class="justify-content-end">
+                            <a href="{% url 'edit_comment' product.id comment.id %}" ><i class="fa-solid fa-pen-to-square"></i></a>
+                            </span>
+                        </span> -->
                     </div>
                 {% endfor %}
             {% endif %}
