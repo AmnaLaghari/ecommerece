@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load poll_extras %}
+
+{% block title %}Cart{% endblock %}
+
+{% block content %}
+<h2 class="text-center mt-3">Cart</h2>
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">title</th>
+                <th scope="col">Price</th>
+                <th scope="col">quantity</th>
+                <th scope="col">Total price</th>
+                <th></th>   
+            </tr>
+        </thead>
+        {% if request.user.is_authenticated %}
+        <tbody>
+          {% for product in cart.product.all %}
+          <tr>
+            <th scope="row"><a href="{% url 'product_detail' product.pk %}">{{product.id}}</a></th>
+            <td>{{product.title}}</td>
+            <td>{{product.price}}</td>
+            <td>{{cart.cart_items|get_product_quantity:product}}</td>
+            <td>{{cart.cart_items|get_product_price:product}}</td>
+            <td> <a href="{% url 'delete_from_cart' product.pk %}" class="btn btn-submit">Delete</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% else %}
+        <tbody>
+          {% for key,value in cart.items %}
+          <tr>
+          {% with key|get_product_by_id as product  %}
+            <th scope="row"><a href="{% url 'product_detail' product.pk %}">{{product.id}}</a></th>
+            <td>{{product.title}}</td>
+            <td>{{product.price}}</td>
+            <td>{{value}}</td>
+            <td>{{product|get_total_price:value}}</td>
+            <td> <a href="{% url 'delete_from_cart' product.pk %}" class="btn btn-submit">Delete</a></td>
+            {% endwith %}
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% endif %}
+      </table>
+      {% if cart %}
+      <p class="row justify-content-end">Total price: ${{cart|get_cart_price:request.user}}<p> 
+      {% endif %}
+    </div>
+{% endblock %}

@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("customusers.urls")),
-    path("users/", include("django.contrib.auth.urls")),
     path('', include("products.urls")),
     path('<int:product_id>/comment/', include("comment.urls")),
+    path('cart/', include("cart.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

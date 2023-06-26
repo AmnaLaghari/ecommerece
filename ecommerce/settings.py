@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     'cloudinary',
     'products',
-    'comment'
+    'comment',
+    'cart',
 ]
 
 MIDDLEWARE = [

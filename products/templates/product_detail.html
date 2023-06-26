@@ -50,43 +50,45 @@
                 <a href="{% url 'delete_product' product.pk %}" class="btn btn-submit">delete</a>
                 {% else %}
                 <a href="{% url 'products' %}" class="btn btn-submit">Back</a>
-                <a href="{% url 'product_detail' product.pk %}" class="btn add-to-cart">Add to cart</a>
+                {% if product.id|item_in_cart:request %}
+                <a href="{% url 'inc_quantity' product.pk %}" class="btn add-to-cart">+</a>
+                <a href="{% url 'dec_quantity' product.pk %}" class="btn add-to-cart">-</a>
+                {% else %}
+                <a href="{% url 'add_to_cart' product.pk %}" class="btn add-to-cart">Add to cart</a>
+                {% endif %}
                 {% endif %}
                 <hr>
                 <h4>Comments</h4>
                 {% if not request.user|is_owner_of_product:product %}
-                    <a href="{% url 'add_comment' product.pk %}" class="btn btn-submit">Add comment</a>
+                <a href="{% url 'add_comment' product.pk %}" class="btn btn-submit">Add comment</a>
                 {% endif %}
                 {% if not product.comments.all %}
-                    No comments yet..
+                No comments yet..
                 {% else %}
                 {% for comment in product.comments.all %}
-                    <div class="card m-2 p-2">
-                        <div class="row">
-                            <div class="col-9">
-                                {{comment.content}}
-                            </div>
-                            {% if request.user|is_owner_of_product:product %}
-                            <span class="col-3 justify-content-end">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a href="{% url 'edit_comment' product.id comment.id %}" ><i class="fa-solid fa-pen-to-square"></i></a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="{% url 'delete_comment' product.id comment.id %}" ><i class="fa-sharp fa-solid fa-trash"></i></a>
-                                    </div>
-                                </div>
-                            </span>
-                            {% endif %}
+                <div class="card m-2 p-2">
+                    <div class="row">
+                        <div class="col-9">
+                            {{comment.content}}
                         </div>
-                        <!-- <span>{{comment.content}}
-                            <span class="justify-content-end">
-                            <a href="{% url 'edit_comment' product.id comment.id %}" ><i class="fa-solid fa-pen-to-square"></i></a>
-                            </span>
-                        </span> -->
+                        {% if request.user|is_owner_of_product:product %}
+                        <span class="col-3 justify-content-end">
+                            <div class="row">
+                                <div class="col-6">
+                                    <a href="{% url 'edit_comment' product.id comment.id %}"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="{% url 'delete_comment' product.id comment.id %}"><i
+                                            class="fa-sharp fa-solid fa-trash"></i></a>
+                                </div>
+                            </div>
+                        </span>
+                        {% endif %}
                     </div>
+                </div>
                 {% endfor %}
-            {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>

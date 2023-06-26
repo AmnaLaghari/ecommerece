@@ -24,6 +24,9 @@
             <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">Signup</a>
           </li>
           {% endif %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'cart_list' %}">Cart</a>
+          </li>
         </ul>
         {% if user.is_authenticated %}
           <li class="d-flex me-5">
