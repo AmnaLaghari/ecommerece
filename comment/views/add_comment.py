@@ -20,6 +20,6 @@ class AddComment(CreateView):
     def dispatch(self, request, *args, **kwargs):
         product = Products.objects.get(pk=self.kwargs.get('product_id'))
         if request.user == product.owner:
-            messages.error(self.request, "You cannot add comment on yor own product")
+            messages.error(self.request, "You cannot add comment on your own product")
             return redirect('post_detail', product.id)
         return super().dispatch(request, *args, **kwargs)

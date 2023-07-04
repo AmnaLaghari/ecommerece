@@ -50,5 +50,10 @@
       {% if cart %}
       <p class="row justify-content-end">Total price: ${{cart|get_cart_price:request.user}}<p> 
       {% endif %}
+      {% if request.user.is_authenticated %}
+        <p class="row justify-content-end"><button class="btn btn-submit" id="submitBtn">Checkout</button><p>
+      {% else %}
+        <span>you have to <a href="{% url 'login' %}" >Login</a> to Checkout</span>
+      {% endif %}
     </div>
 {% endblock %}

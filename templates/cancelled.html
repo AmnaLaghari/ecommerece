@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load poll_extras %}
+
+{% block title %}Checkout Cancel{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6">
+        Couldn't checkout try again.
+        <a href="{% url 'products'%}" class="btn btn-submit">Continue Shopping</a>
+    </div>
+    <div class="col-6">
+        <img src="{% static 'media/successful_checkout' %}" alt="home" class="shopping"/>
+    </div>
+</div>
+
+{% endblock %}

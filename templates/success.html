@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load poll_extras %}
+{% load static %}
+
+{% block title %}Checkout Success{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6">
+        You have successfully checkout.
+        <p>Thankyou for shoppinf with us</p>
+        <a href="{% url 'products'%}" class="btn btn-submit">Continue Shopping</a>
+    </div>
+    <div class="col-6">
+        <img src="{% static 'media/successful_checkout.png' %}" alt="home" class="shopping"/>
+    </div>
+</div>
+
+{% endblock %}

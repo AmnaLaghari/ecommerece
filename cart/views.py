@@ -1,9 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from products.models.product import Products
 from cart.models import Cart, CartItems
 from django.views.generic import ListView
 from customusers.utils import not_owner, calculate_cart_price
 from django.contrib import messages
+from django.conf import settings 
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import stripe
+from django.views.generic.base import TemplateView
+
 
 def add_to_cart(request, pk):
     product = Products.objects.get(pk=pk)
@@ -18,7 +24,7 @@ def add_to_cart(request, pk):
             else:
                 new_cart = Cart.objects.create(buyer = request.user)
                 CartItems.objects.create(product=product, cart=new_cart, product_quantity=1, product_price=product.price)
-                new_cart = calculate_cart_price(cart)
+                new_cart = calculate_cart_price(new_cart)
                 new_cart.save()
             messages.success(request, 'Product added to cart successfully')
         else:
@@ -118,3 +124,48 @@ class CartList(ListView):
         else:
             queryset = self.request.session.get('cart')
         return queryset
+    
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+    
+@csrf_exempt
+def create_checkout_session(request):
+    if request.method == 'GET':
+        domain_url = 'http://localhost:8000/'
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        line_items_list = []
+        cart = Cart.objects.filter(buyer = request.user).first()
+        for cart_item in cart.cart_items.filter(cart=cart):
+            line_items_list.append({
+                    'quantity': cart_item.product_quantity * 100, 
+                    'price_data': {
+                        'unit_amount': cart_item.product.price, 
+                        'product_data': {
+                            'name': cart_item.product.title,
+                        },
+                        'currency': 'usd'
+                    }
+                })
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                success_url=domain_url + 'success/',
+                cancel_url=domain_url + 'cancelled/',
+                payment_method_types=['card'],
+                mode='payment',
+                line_items=line_items_list
+            )
+            return JsonResponse({'sessionId': checkout_session['id']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+        
+class SuccessView(TemplateView):
+    template_name = 'success.html'
+
+
+class CancelledView(TemplateView):
+    template_name = 'ecommerce/templates/cancelled.html'
+

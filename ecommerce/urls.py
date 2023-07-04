@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from customusers.views import home
 from django.conf import settings
 from django.conf.urls.static import static
+from cart import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,8 @@ urlpatterns = [
     path('', include("products.urls")),
     path('<int:product_id>/comment/', include("comment.urls")),
     path('cart/', include("cart.urls")),
+    path('config/', views.stripe_config),
+    path('create-checkout-session/', views.create_checkout_session),
+    path('success/', views.SuccessView.as_view()),
+    path('cancelled/', views.CancelledView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
